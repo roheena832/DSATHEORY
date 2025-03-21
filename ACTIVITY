@@ -1,0 +1,84 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Song {
+    string title;
+    string artist;
+    int duration; 
+    Song* next;   
+
+
+    Song(string t, string a, int d) {
+        title = t;
+        artist = a;
+        duration = d;
+        next = nullptr;
+    }
+};
+
+
+class MusicList {
+private:
+    Song* head;  
+
+public:
+  
+    MusicList() {
+        head = nullptr;
+    }
+
+    void addSong(string title, string artist, int duration) {
+        Song* newSong = new Song(title, artist, duration);
+
+        if (head == nullptr) {
+            head = newSong;
+        } else {
+            Song* temp = head;
+            while (temp->next != nullptr) {
+                temp = temp->next;
+            }
+            temp->next = newSong;
+        }
+    }
+
+ 
+    void displaySongs() {
+        if (head == nullptr) {
+            cout << "No songs in the list!" << endl;
+            return;
+        }
+
+        Song* temp = head;
+        while (temp != nullptr) {
+            cout << "Title: " << temp->title << ", Artist: " << temp->artist
+                 << ", Duration: " << temp->duration << " seconds" << endl;
+            temp = temp->next;
+        }
+    }
+
+
+    ~MusicList() {
+        Song* current = head;
+        while (current != nullptr) {
+            Song* next = current->next;
+            delete current;
+            current = next;
+        }
+    }
+};
+
+int main() {
+    MusicList list;
+
+    // song list
+    list.addSong("Song 1", "Artist 1", 210);
+    list.addSong("Song 2", "Artist 2", 180);
+    list.addSong("Song 3", "Artist 3", 240);
+
+  
+    cout << "Songs in the list:" << endl;
+    list.displaySongs();
+
+    return 0;
+}
